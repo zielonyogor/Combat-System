@@ -38,20 +38,23 @@ public class PlayerInputManager : MonoBehaviour
 	private void Update()
 	{
 		groundedPlayer = controller.isGrounded;
-		if (groundedPlayer && playerVelocity.y < 0)
+		if(groundedPlayer)
 		{
-			playerVelocity.y = 0f;
 			playerInput.SwitchCurrentActionMap("Ground");
 			playerInput.actions["Jump"].performed += Jump;
 		}
+		if (groundedPlayer && playerVelocity.y < 0)
+		{
+			playerVelocity.y = 0f;
+		}
 
 		Vector2 input = playerInput.actions["Move"].ReadValue<Vector2>();
-		playerVelocity = new Vector3(input.x, playerVelocity.y, input.y);
-		controller.Move(playerVelocity);
+		playerVelocity = new Vector3(input.x * moveSpeed, playerVelocity.y, input.y * moveSpeed);
+		//controller.Move(playerVelocity);
 
 		if (playerVelocity.y != 0 && groundedPlayer)
 		{
-			playerVelocity.y += Mathf.Sqrt(jumpHeight * -1f * gravityValue);
+			playerVelocity.y += Mathf.Sqrt(jumpHeight * -3f * gravityValue);
 		}
 
 		playerVelocity.y += gravityValue * Time.deltaTime;
