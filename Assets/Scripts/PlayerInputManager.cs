@@ -4,15 +4,19 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerInputManager : MonoBehaviour
 {
 	[Tooltip("Height of first jump")]
 	[SerializeField] float jumpHeight = 3f;
 	[Tooltip("Speed")]
 	[SerializeField] float moveSpeed = 4f;
-	private const float gravityValue = -9.81f;
 
-    private PlayerInput playerInput;
+	private const float gravityValue = -9.81f;
+	private const float jumpGravityScale = 0.5f;
+
+	private PlayerInput playerInput;
     private CharacterController controller;
 
 	private Vector3 playerVelocity;
@@ -26,6 +30,7 @@ public class PlayerInputManager : MonoBehaviour
 	private void OnEnable()
 	{
 		playerInput.actions["Jump"].performed += Jump;
+		playerInput.actions["Move"].performed += Move;
 	}
 
 	void Start()
@@ -38,40 +43,52 @@ public class PlayerInputManager : MonoBehaviour
 	private void Update()
 	{
 		groundedPlayer = controller.isGrounded;
+
+		if (playerVelocity.y > 0)
+		{
+			playerVelocity.y += gravityValue * jumpGravityScale * Time.deltaTime;
+		}
+		else if(!groundedPlayer)
+		{
+			playerVelocity.y += gravityValue * Time.deltaTime;
+			Debug.Log(playerVelocity.y);
+		}
+
+		controller.Move(playerVelocity * Time.deltaTime);
+		playerVelocity.x = 0;
+		playerVelocity.z = 0;
+
 		if(groundedPlayer)
 		{
 			playerInput.SwitchCurrentActionMap("Ground");
-			playerInput.actions["Jump"].performed += Jump;
+			playerVelocity.y = 0;
 		}
-		if (groundedPlayer && playerVelocity.y < 0)
-		{
-			playerVelocity.y = 0f;
-		}
+	}
 
+	private void Move(InputAction.CallbackContext context)
+	{
 		Vector2 input = playerInput.actions["Move"].ReadValue<Vector2>();
 		playerVelocity = new Vector3(input.x * moveSpeed, playerVelocity.y, input.y * moveSpeed);
-		//controller.Move(playerVelocity);
-
-		if (playerVelocity.y != 0 && groundedPlayer)
-		{
-			playerVelocity.y += Mathf.Sqrt(jumpHeight * -3f * gravityValue);
-		}
-
-		playerVelocity.y += gravityValue * Time.deltaTime;
-		controller.Move(playerVelocity * Time.deltaTime);
+		Debug.Log("mooove");
 	}
 
 	private void Jump(InputAction.CallbackContext context)
 	{
 		playerInput.SwitchCurrentActionMap("Air");
-		Debug.Log("jump");
-		playerVelocity.y = 1f;
-		playerInput.actions["Jump"].performed -= Jump;
+		playerVelocity.y = 1f * jumpHeight;
 		playerInput.actions["Attack"].performed += Attack;
 	}
 
 	private void Attack(InputAction.CallbackContext context) 
 	{
 		Debug.Log("Attack!!!");
+		StartCoroutine(PerformAttack());
+	}
+
+	private IEnumerator PerformAttack()
+	{
+		playerVelocity = Vector3.zero;
+		yield return new WaitForSeconds(1f);
+
 	}
 }
