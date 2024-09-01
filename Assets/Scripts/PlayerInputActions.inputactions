@@ -1,5 +1,5 @@
 {
-    "name": "PlayerInput",
+    "name": "PlayerInputActions",
     "maps": [
         {
             "name": "Ground",
@@ -18,6 +18,24 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "cd9476e3-a8e2-441d-8ec7-7022a4481614",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "78693ae3-9619-4cbb-8469-a26076d6c5b0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PlungeAttack",
+                    "type": "Button",
+                    "id": "54969797-e281-4837-967b-6c0ba471ae14",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -90,27 +108,10 @@
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Air",
-            "id": "0d92187b-bc11-4227-8e8f-d86dfbde63bb",
-            "actions": [
-                {
-                    "name": "Attack",
-                    "type": "Button",
-                    "id": "feabbf73-0b24-4c62-ad27-38b3b3e9c28d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "cf96b7e9-aa87-419c-bf9c-c04bd1150e5c",
+                    "id": "4d112aa3-3d7b-4f49-9843-86621f3661f1",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
@@ -118,6 +119,39 @@
                     "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "27d86056-1fc1-4050-be85-f4b85167ef1f",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlungeAttack",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "87ee58b1-cc5b-40ba-a17e-ad5411bae4ba",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlungeAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "c92db670-433a-4e01-8bd5-22cfd7c2e9d2",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlungeAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
