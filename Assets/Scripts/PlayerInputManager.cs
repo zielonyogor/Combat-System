@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,26 +14,22 @@ public class PlayerInputManager : MonoBehaviour
 	[SerializeField] float moveSpeed = 4f;
 
 	private float gravityValue = -9.81f;
-	[SerializeField]private float jumpGravityScale = 2f;
+	[SerializeField]private float jumpGravityScale = 1f;
 	private float fallGravityScale = 1f;
 
 	private PlayerInput playerInput;
     private CharacterController controller;
 
-	private Vector3 playerVelocity;
-	private bool groundedPlayer;
+	public Vector3 playerVelocity;
+	public bool groundedPlayer => controller.isGrounded;
 
-	private uint numberOfJumps = 2; 
+	public event Action OnBeforeMove;
 
 	private void Awake()
 	{
 		playerInput = GetComponent<PlayerInput>();
 	}
 
-	private void OnEnable()
-	{
-		playerInput.actions["Jump"].performed += Jump;
-	}
 
 	void Start()
     {
@@ -45,48 +40,50 @@ public class PlayerInputManager : MonoBehaviour
 
 	private void Update()
 	{
-		groundedPlayer = controller.isGrounded;
+		UpdateGravity();
 
-		if (playerVelocity.y > 0)
-		{
-			playerVelocity.y += gravityValue * jumpGravityScale * Time.deltaTime;
-			Debug.Log(playerVelocity.y);
-		}
-		else if(!groundedPlayer)
-		{
-			playerVelocity.y += gravityValue * fallGravityScale * Time.deltaTime;
-		}
+		OnBeforeMove?.Invoke();
 
 		Vector2 input = playerInput.actions["Move"].ReadValue<Vector2>();
 		playerVelocity = new Vector3(input.x * moveSpeed, playerVelocity.y, input.y * moveSpeed);
 
 		controller.Move(playerVelocity * Time.deltaTime);
-		playerVelocity.x = 0;
-		playerVelocity.z = 0;
 
 		if(groundedPlayer)
 		{
 			playerInput.actions["PlungeAttack"].performed -= PlungeAttack;
 
 			fallGravityScale = 1f;
-			playerVelocity.y = 0;
-
-			numberOfJumps = 2;
 		}
 		else
 		{
 			playerInput.actions["Attack"].performed += Attack;
 			playerInput.actions["PlungeAttack"].performed += PlungeAttack;
 		}
+
+		//if (playerVelocity.y > 0)
+		//{
+		//	playerVelocity.y += gravityValue * jumpGravityScale * Time.deltaTime;
+		//	//Debug.Log(playerVelocity.y);
+		//}
+		//else if(!groundedPlayer)
+		//{
+		//	playerVelocity.y += gravityValue * fallGravityScale * Time.deltaTime;
+		//}
 	}
 
-	private void Jump(InputAction.CallbackContext context)
+	private void UpdateGravity()
 	{
-		if(groundedPlayer || numberOfJumps > 0)
+		float gravity = Physics.gravity.y * Time.deltaTime;
+		if (playerVelocity.y > 0)
 		{
-			numberOfJumps--;
-			playerVelocity.y += 1f * jumpHeight;
+			playerVelocity.y += gravity * jumpGravityScale;
 		}
+		else
+		{
+			playerVelocity.y = groundedPlayer ? -1f : playerVelocity.y + gravity;
+		}
+		
 	}
 
 	private void Attack(InputAction.CallbackContext context) 
@@ -116,7 +113,6 @@ public class PlayerInputManager : MonoBehaviour
 	private void PlungeAttack(InputAction.CallbackContext context) 
 	{
 		Debug.Log("Plunging");
-		//playerVelocity.y = -10f;
 		fallGravityScale = 15f;
 	}
 }
