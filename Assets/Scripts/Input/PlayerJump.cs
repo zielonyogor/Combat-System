@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInputManager))]
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerJump : MonoBehaviour
 {
     [SerializeField] float jumpSpeed = 10f;
@@ -10,14 +10,14 @@ public class PlayerJump : MonoBehaviour
 	[SerializeField] float jumpButtonBuffer = 0.05f;
 	[SerializeField] uint numberOfMidAirJumps = 1;
 
-    PlayerInputManager playerInputManager;
+    private PlayerMovement playerInputManager;
 
 	private bool tryJumping;
 	private float lastJumpButtonTime;
 
 	private void Awake()
 	{
-		playerInputManager = GetComponent<PlayerInputManager>();
+		playerInputManager = GetComponent<PlayerMovement>();
 	}
 
 	private void OnEnable()
@@ -32,7 +32,6 @@ public class PlayerJump : MonoBehaviour
 
 	public void OnJump()
 	{
-		Debug.Log("pressed Jump");
         tryJumping = true;
 		lastJumpButtonTime = Time.time;
 	}
@@ -60,7 +59,6 @@ public class PlayerJump : MonoBehaviour
 
 	private void Jump(float speed)
 	{
-		Debug.Log("jumping: " + speed);
 		playerInputManager.playerVelocity.y = speed;
 		lastJumpButtonTime = 0;
 	}
