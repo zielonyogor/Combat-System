@@ -6,11 +6,11 @@ using UnityEngine.UIElements;
 
 public class SecondGroundAttackState : GroundAttackBase
 {
-	private float totalZRotation = 360f;
+	private float totalZRotation = 720f;
 	private float rotationPerFrame;
 	public SecondGroundAttackState(Player player, StateMachine stateMachine) : base(player, stateMachine) 
 	{
-		attackDuration = 1f;
+		attackDuration = 0.8f;
 	}
 
 	public override void Enter()
@@ -39,7 +39,8 @@ public class SecondGroundAttackState : GroundAttackBase
 		base.UpdatePhysics();
 		if (!hasFinishedAttack)
 		{
-			player.transform.Rotate(0, 0, rotationPerFrame * Time.deltaTime);
+			float progress = (Time.time - attackTime) / attackDuration;
+			player.transform.rotation = Quaternion.AngleAxis(Mathf.Lerp(player.transform.rotation.eulerAngles.y, 360, progress), Vector3.forward);
 		}
 	}
 
