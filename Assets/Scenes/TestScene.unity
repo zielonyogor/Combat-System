@@ -333,51 +333,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &509692560
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 509692562}
-  - component: {fileID: 509692561}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &509692561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 509692560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feeb481e28dae0e4eb475b12577cdbae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 990875291}
---- !u!4 &509692562
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 509692560}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.822614, y: -1.3802294, z: -0.7489048}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,16 +638,16 @@ GameObject:
   - component: {fileID: 990875292}
   - component: {fileID: 990875298}
   - component: {fileID: 990875297}
-  - component: {fileID: 990875296}
   - component: {fileID: 990875300}
   - component: {fileID: 990875299}
+  - component: {fileID: 990875301}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &990875292
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -775,29 +730,12 @@ Transform:
   m_GameObject: {fileID: 990875291}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8557665, y: 4.22, z: -0.34}
+  m_LocalPosition: {x: -2.8557665, y: 1.16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &990875296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990875291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af70c44edde45a446a8106da18f5b179, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 4
-  jumpGravityScale: 1
-  fallGravityScale: 1
-  playerInput: {fileID: 0}
-  playerVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &990875297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,13 +801,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 990875291}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e9e01ab5e009c64f86814295df5784f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3dd14ab5de5fb94479e3bc659a322fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 8
-  midAirJumpSpeed: 6
-  jumpButtonBuffer: 0.05
-  numberOfMidAirJumps: 1
+  moveSpeed: 5
+  jumpSpeed: 6
+  midAirJumpSpeed: 4
+  fallGravityScale: 1
+  jumpGravityScale: 1
+  canMidAirJump: 0
+  playerVelocity: {x: 0, y: 0, z: 0}
+  inputManager: {fileID: 0}
+  characterController: {fileID: 0}
 --- !u!114 &990875300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -879,9 +822,66 @@ MonoBehaviour:
   m_GameObject: {fileID: 990875291}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cbf18384f77c6245901d38d025e05b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 00e6ecfe18763a742be2baa6559f6b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveAction:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 1100af23-7216-4568-88a0-9a05548dedbb
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  jumpAction:
+    m_Name: Jump
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: aed98033-0b25-42e2-881c-dd6a621531c8
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  attackAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: cf625e6d-2581-4946-ab87-3ed8e4353f84
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  plungeAttackAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 1fd16e9c-0e4b-433e-9519-f73292ea8ebc
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+--- !u!95 &990875301
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990875291}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e8c06a74b02c351439047ecc9ece595d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1325805543
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,4 +998,3 @@ SceneRoots:
   - {fileID: 1325805547}
   - {fileID: 799568902}
   - {fileID: 494541131}
-  - {fileID: 509692562}
