@@ -10,6 +10,7 @@ public class JumpState : State
 	public override void Enter()
 	{
 		base.Enter();
+		//If player canMidAirJump that means, that this is the first jump, otherwise it's mid-air jump
 		player.playerVelocity.y = player.canMidAirJump ? player.jumpSpeed : player.midAirJumpSpeed;
 	}
 

@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MidAirState : State
 {
 	private Vector2 input;
+
+	private const float plungeThreshold = 3f;
 	public MidAirState(Player player, StateMachine stateMachine) : base(player, stateMachine) { }
 
 	public override void Enter()
@@ -24,6 +27,12 @@ public class MidAirState : State
 		}
 		if(player.inputManager.plungeAttackAction.triggered)
 		{
+			RaycastHit hit;
+			Physics.Raycast(player.transform.position, Vector3.down, out hit);
+			if (hit.distance < plungeThreshold)
+			{
+				return;
+			}
 			stateMachine.Change(player.states.PlungeAttackState);
 			return;
 		}
@@ -31,6 +40,10 @@ public class MidAirState : State
 		{
 			stateMachine.Change(player.states.MidAirAttackState);
 			return;
+		}
+		if (player.inputManager.jumpAction.triggered)
+		{
+			player.tryingToJumpTime = Time.time;
 		}
 	}
 
@@ -41,7 +54,15 @@ public class MidAirState : State
 		if (player.groundedPlayer)
 		{
 			velocityY = -1f;
-			if(input != Vector2.zero)
+
+			//Like in JumpState, lets player jump immediately 
+			if (Time.time - player.tryingToJumpTime < player.jumpButtonBuffer)
+			{
+				player.canMidAirJump = true;
+				stateMachine.Change(player.states.JumpState);
+				return;
+			}
+			if (input != Vector2.zero)
 			{
 				stateMachine.Change(player.states.WalkState);
 			}
