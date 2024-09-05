@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+/// <summary>
+/// A collection of all states used by Player
+/// </summary>
 public class StateList
 {
     public IdleState IdleState {  get; private set; }
@@ -11,6 +11,7 @@ public class StateList
     public PlungeAttackState PlungeAttackState { get; private set; }
     public FirstGroundAttackState FirstGroundAttackState { get; private set; }
     public SecondGroundAttackState SecondGroundAttackState { get; private set; }
+    public MidAirAttackState MidAirAttackState { get; private set; }
 
     public StateList(Player player, StateMachine stateMachine)
     {
@@ -21,5 +22,6 @@ public class StateList
         PlungeAttackState  = new PlungeAttackState(player, stateMachine);
         FirstGroundAttackState = new FirstGroundAttackState(player, stateMachine);
         SecondGroundAttackState = new SecondGroundAttackState(player, stateMachine);
+        MidAirAttackState = new MidAirAttackState(player, stateMachine);
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlungeAttackState : State
 {
@@ -13,7 +12,6 @@ public class PlungeAttackState : State
 
 	private float plungeSpeed;
 
-	private Vector2 input;
 	public PlungeAttackState(Player player, StateMachine stateMachine) : base(player, stateMachine) { }
 
 	public override void Enter()
@@ -39,17 +37,12 @@ public class PlungeAttackState : State
 		}
 	}
 
-	public override void HandleInput()
-	{
-		input = player.inputManager.moveAction.ReadValue<Vector2>();
-	}
-
 	public override void UpdatePhysics()
 	{
 		if (player.groundedPlayer)
 		{
 			player.playerVelocity.y = -1f;
-			if (input != Vector2.zero)
+			if (player.inputManager.moveAction.IsPressed())
 			{
 				stateMachine.Change(player.states.WalkState);
 			}

@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundAttackBase : State
+public class AttackStateBase : State
 {
 	protected float attackTime;
 	protected float attackDuration;
 	protected bool hasFinishedAttack;
 
 	protected const float comboAttackBufferTime = 0.5f;
-	public GroundAttackBase(Player player, StateMachine stateMachine) : base(player, stateMachine) { }
+	public AttackStateBase(Player player, StateMachine stateMachine) : base(player, stateMachine) { }
 
 	public override void Enter()
 	{

@@ -27,6 +27,11 @@ public class MidAirState : State
 			stateMachine.Change(player.states.PlungeAttackState);
 			return;
 		}
+		if(player.inputManager.attackAction.triggered)
+		{
+			stateMachine.Change(player.states.MidAirAttackState);
+			return;
+		}
 	}
 
 	public override void UpdatePhysics()

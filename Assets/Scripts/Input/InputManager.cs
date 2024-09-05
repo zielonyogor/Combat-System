@@ -4,6 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Contains all player's input actions
+/// </summary>
 [RequireComponent(typeof(PlayerInput))]
 public class InputManager : MonoBehaviour
 {

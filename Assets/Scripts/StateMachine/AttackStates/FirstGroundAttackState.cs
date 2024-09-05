@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirstGroundAttackState : GroundAttackBase
+public class FirstGroundAttackState : AttackStateBase
 {
 	private Vector3 moveDirection = new Vector3(0, -0.02f, 3f);
 	private Vector3 moveSpeed;
@@ -27,11 +27,11 @@ public class FirstGroundAttackState : GroundAttackBase
 		}
 		if (hasFinishedAttack)
 		{
-			if(player.inputManager.attackAction.triggered)
+			if(player.inputManager.attackAction.IsPressed())
 			{
 				stateMachine.Change(player.states.SecondGroundAttackState);
 			}
-			else if (player.inputManager.moveAction.triggered)
+			else if (player.inputManager.moveAction.IsPressed())
 			{
 				stateMachine.Change(player.states.WalkState);
 			}

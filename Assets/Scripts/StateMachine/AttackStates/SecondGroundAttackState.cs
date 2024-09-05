@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
-public class SecondGroundAttackState : GroundAttackBase
+public class SecondGroundAttackState : AttackStateBase
 {
-	private float totalZRotation = 720f;
-	private float rotationPerFrame;
+	private float totalZRotation = 360f;
+	float rotationPerFrame;
 	public SecondGroundAttackState(Player player, StateMachine stateMachine) : base(player, stateMachine) 
 	{
 		attackDuration = 0.8f;
@@ -16,14 +14,14 @@ public class SecondGroundAttackState : GroundAttackBase
 	public override void Enter()
 	{
 		base.Enter();
-		rotationPerFrame = totalZRotation / rotationPerFrame;
+		rotationPerFrame = totalZRotation / attackDuration;
 	}
 
 	public override void HandleInput()
 	{
 		if (hasFinishedAttack)
 		{
-			if (player.inputManager.moveAction.triggered)
+			if (player.inputManager.moveAction.IsPressed())
 			{
 				stateMachine.Change(player.states.WalkState);
 			}
@@ -39,8 +37,7 @@ public class SecondGroundAttackState : GroundAttackBase
 		base.UpdatePhysics();
 		if (!hasFinishedAttack)
 		{
-			float progress = (Time.time - attackTime) / attackDuration;
-			player.transform.rotation = Quaternion.AngleAxis(Mathf.Lerp(player.transform.rotation.eulerAngles.y, 360, progress), Vector3.forward);
+			player.transform.Rotate(0, 0, rotationPerFrame * Time.deltaTime);
 		}
 	}
 

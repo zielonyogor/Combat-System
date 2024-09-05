@@ -1,3 +1,7 @@
+
+/// <summary>
+/// Contains and changes current state
+/// </summary>
 public class StateMachine
 {
     public State currentState;
