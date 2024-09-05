@@ -16,6 +16,10 @@ public class JumpState : State
 	public override void HandleInput()
 	{
 		input = player.inputManager.moveAction.ReadValue<Vector2>();
+		if(player.inputManager.jumpAction.triggered)
+		{
+			player.tryingToJumpTime = Time.time;
+		}
 	}
 
 	public override void UpdatePhysics()
@@ -32,7 +36,17 @@ public class JumpState : State
 		}
 		else
 		{
-			stateMachine.Change(player.states.MidAirState);
+			//Enables player to have some more time to press jump button if they want to mid-air jump immediately
+			if (Time.time - player.tryingToJumpTime < player.jumpButtonBuffer && player.canMidAirJump)
+			{
+				player.canMidAirJump = false;
+				Enter(); //Re-enter jump state (skip mid-air state)
+				return;
+			}
+			else
+			{
+				stateMachine.Change(player.states.MidAirState);
+			}
 		}
 		player.playerVelocity = new Vector3(input.x * player.moveSpeed, velocityY, input.y * player.moveSpeed);
 		player.characterController.Move(player.playerVelocity * Time.deltaTime);

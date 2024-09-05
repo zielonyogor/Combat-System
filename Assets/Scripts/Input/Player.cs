@@ -22,6 +22,11 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool canMidAirJump;
     [HideInInspector]
+    public float tryingToJumpTime;
+    [HideInInspector]
+    public float jumpButtonBuffer = 0.3f;
+
+    [HideInInspector]
     public Material playerMaterial;
 	[HideInInspector]
 	public Vector3 playerVelocity;

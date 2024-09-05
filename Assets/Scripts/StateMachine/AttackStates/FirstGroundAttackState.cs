@@ -27,6 +27,9 @@ public class FirstGroundAttackState : AttackStateBase
 		}
 		if (hasFinishedAttack)
 		{
+			//Now, if player is pressing attack and move buttons, it (most of times) starts walking
+			//There could be implemented variable wasOrIsTryingToAttack, so that clicked attack button before hasFinishedAttack
+			//will also be recorded to start next attack. (just like with jump)
 			if(player.inputManager.attackAction.IsPressed())
 			{
 				stateMachine.Change(player.states.SecondGroundAttackState);

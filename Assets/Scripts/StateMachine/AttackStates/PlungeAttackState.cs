@@ -7,8 +7,8 @@ public class PlungeAttackState : State
 	private const float plungeThreshold = 3f;
 	private const float bigPlungeThreshold = 8f;
 
-	[SerializeField] float smallPlungeSpeed = 6f;
-	[SerializeField] float bigPlungeSpeed = 14f;
+	[SerializeField] float smallPlungeSpeed = 10f;
+	[SerializeField] float bigPlungeSpeed = 20f;
 
 	private float plungeSpeed;
 
